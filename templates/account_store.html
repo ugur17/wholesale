@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{image_file}}">
+        <a type="button" class="btn btn-danger btn-sm px-3 mb-2 material-tooltip-main" data-toggle="tooltip" data-placement="top" title="Take Priority" href="{{ url_for('take_p') }}"><i class="far fa-heart">Take Priority</i></a>
+        <button type="button" class="btn btn-danger btn-sm px-3 mb-2 material-tooltip-main" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete Account</button>
+        <div class="media-body">
+          <h2 class="account-heading">{{ store['store_name'] }}</h2>
+          <p class="text-secondary">{{ store['phone'] }}</p>
+          <p class="text-secondary">Current Priority: {{ store['priority'] }}</p>
+        </div>
+      </div>
+        <div class="content-section">
+            <form method="POST", action="" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4"> Update Infos </legend>
+                    <div class="form-group">
+                        {{ form.store_name.label(class="form-control-label") }}
+                        {% if form.store_name.errors %}
+                            {{ form.store_name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.store_name.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.store_name(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.store_address.label(class="form-control-label") }}
+                        {% if form.store_address.errors %}
+                            {{ form.store_address(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.store_address.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.store_address(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.owner_name.label(class="form-control-label") }}
+                        {% if form.owner_name.errors %}
+                            {{ form.owner_name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.owner_name.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.owner_name(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.phone.label(class="form-control-label") }}
+                        {% if form.phone.errors %}
+                            {{ form.phone(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.phone.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.phone(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            {{ form.picture.label(class="form-control-file-label") }}
+                        </div>
+                        {{ form.picture(class="form-control-file") }}
+                        {% if form.picture.errors %}
+                            {% for error in form.picture.errors %}
+                                <span class="text-danger">{{ error }}</span></br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group mt-2">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Confirm Order?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure that you wanna delete the account? 
+                    (This process is irreversible.)
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="{{ url_for('delete_store') }}", method='POST'>
+                        <input class="btn btn-danger" type=submit value="Confirm"/>
+                    </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+{% endblock content %}

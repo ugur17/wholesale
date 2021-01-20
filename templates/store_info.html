@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{image_file}}">
+      {% if session['whois'] == '1' %}
+        <a type="button" class="btn btn-danger btn-sm px-3 mb-2 material-tooltip-main" data-toggle="tooltip" data-placement="top" title="Add to wishlist" href="{{ url_for('fav_store', fav_store_id=store.id) }}"><i class="far fa-heart">Add to fav</i></a>
+      {% endif %}
+      <div class="media-body">
+        <h2 class="account-heading">{{ store['store_name'] }}</h2>
+        <p class="text-secondary">{{ store['phone'] }}</p>
+      </div>
+      <div class="content-section">
+        <p class="article-content">Store Address: {{ store.address }}</p>
+        <p class="article-content">Owner Name: {{ store.name }}</p>
+        <p class="article-content">Owner Phone: {{ store.phone }}</p>
+      </div>
+    </div>
+</div>
+{% endblock content %}

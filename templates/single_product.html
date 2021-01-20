@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% if product %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                <img class="rounded-circle article-img" src="{{ image_file }}">
+                <a class="mr-2" href="{{ url_for('store_info', store_id=product.store_id) }}">{{ product.store_name }}</a>
+                <small class="text-muted">{{ product.store_phone }}</small>
+                </div>
+                {% if product.store_phone == session['phone'] %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_product', product_id = product.product_id) }}" >Update</a>
+                        <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button>
+                    </div>
+                {% endif %}
+                <h2><a class="article-title">Product Name: {{ product.product_name }}</a></h2>
+                <p class="article-content">Material Type: {{ product.material_type }}</p>
+                <p class="article-content">Color: {{ product.color }}</p>
+                <p class="article-content">Price: {{ product.price }}</p>
+                <p class="article-content">Changing Date: {{ product.changing_date }}</p>
+                {% if 'whois' in session %}
+                    {% if session['whois'] == '1' %}
+                        <form method="POST", action="">
+                            {{ form.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <div class="media content-section">
+                                    <div class="form-group">
+                                        {{ form.quantity.label(class="form-control-label") }}
+                                        {% if form.quantity.errors %}
+                                            {{ form.quantity(class="form-control form-control-sm is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.quantity.errors %}
+                                                    <span>
+                                                        {{ error }}
+                                                    </span>
+                                                {% endfor %}    
+                                            </div>
+                                        {% else %}
+                                            {{ form.quantity(class="form-group mx-sm-3 mb-2") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.submit(class="btn btn-outline-info mt-2") }}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </article>
+    {% endif %}
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Delete Product?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                Are you sure that you wanna delete it?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ url_for('delete_product', product_id = product.product_id) }}", method='POST'>
+                    <input class="btn btn-danger" type=submit value="Confirm"/>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+{% endblock content %}

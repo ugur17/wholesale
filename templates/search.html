@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block content %}
+        <form method="POST", action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                    <div class="form-field">
+                        {{ form.who_search.label(class="form-control-label") }} 
+                        {{ form.who_search(class="form-control form-control") }}
+                        <i class="fas fa-caret-down"></i>
+                        {% if form.who_search.errors %}
+                        <ul class="errors">
+                            {% for error in form.who_search.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.search.label(class="form-control-label") }}
+                        {% if form.search.errors %}
+                            {{ form.search(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.search.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}    
+                            </div>
+                        {% else %}
+                            {{ form.search(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>                
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info mt-2") }}
+                    </div>            
+            </fieldset>
+        </form>
+        {% if stores %}
+            {% for store in stores %}
+                <div class="content-section">
+                    <div class="media">
+                        <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' +  store['photo'] ) }}">
+                        {% if session['whois'] == '1' %}
+                            <a type="button" class="btn btn-danger btn-sm px-3 mb-2 material-tooltip-main" data-toggle="tooltip" data-placement="top" title="Add to wishlist" href="{{ url_for('fav_store', fav_store_id=store.id) }}"><i class="far fa-heart">Add to fav</i></a>
+                        {% endif %}
+                        <div class="media-body">
+                            
+                            <h2 class="account-heading"><a class="mb-2 text-muted text-uppercase small" href="{{ url_for('store_info', store_id=store.id) }}">{{ store['store_name'] }}</a></h2>
+                            <p class="text-secondary">{{ store['phone'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if customers %}
+        {% for customer in customers %}
+            <div class="content-section">
+                <div class="media">
+                    <img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' +  customer['photo'] ) }}">
+                    <div class="media-body">
+                        <h2 class="account-heading">{{ customer['name'] }}</h2>
+                        <p class="text-secondary">{{ customer['phone'] }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

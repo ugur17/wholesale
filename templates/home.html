@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% if products %}
+      {% for product in products %}
+      <div class="row mb-4">
+        <div class="col-md-5 col-lg-3 col-xl-3">
+    
+          <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+
+            <a href="#!">
+              <div class="mask">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.photo ) }}">
+                <div class="mask rgba-black-slight"></div>
+              </div>
+            </a>
+          </div>
+    
+        </div>
+        <div class="col-md-7 col-lg-9 col-xl-9">
+          <div class="row">
+            <div class="col-lg-7 col-xl-7">
+    
+              <h5>{{ product.product_name }}</h5>
+              <a class="mb-2 text-muted text-uppercase small" href="{{ url_for('store_info', store_id=product.store_id) }}">{{ product.store_name }}</a>
+              <hr>
+            </div>
+            <div class="col-lg-5 col-xl-5">
+    
+              <h6 class="mb-3"><span>{{ product.price }}₺</span></h6>
+              <div class="my-4">
+                <a class="btn btn-primary btn-sm mt-1 mb-1" href="{{ url_for('single_product', product_id = product.product_id) }}" >Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    {% else %}
+      <h1>There is no any product.</h1>
+    {% endif %}
+{% endblock content %}

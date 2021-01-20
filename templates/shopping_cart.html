@@ -1,0 +1,126 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section>
+
+  <!--Grid row-->
+  <div class="row">
+
+    <!--Grid column-->
+    <div class="col-lg-8">
+      <div class="mb-3">
+        <div class="pt-4 wish-list">
+
+          <h5 class="mb-4">Shopping Cart</h5>
+            {% if products %}
+              {% for product in products %}
+                  <div class="row mb-4">
+                    <div class="col-md-5 col-lg-3 col-xl-3">
+                      <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+
+                          <div class="mask">
+                            <img class="img-fluid w-100"
+                              src="{{ url_for('static', filename='profile_pics/' +  product['photo'] ) }}">
+                            <div class="mask rgba-black-slight"></div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-7 col-lg-9 col-xl-9">
+                      <div>
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <h5>{{ product.product_name }}</h5>
+                            <p class="mb-3 text-muted text-uppercase small">{{ product.store_name }}</p>
+                            <p class="mb-2 text-muted text-uppercase small">Color: {{ product.color }}</p>
+                            <p class="mb-3 text-muted text-uppercase small">Material: {{ product.material_type }}</p>
+                          </div>
+                          <div>
+                            <div class="def-number-input number-input safari_only mb-0 w-100">
+                              Quantity: {{ product.quantity }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div>
+                            <form action="{{ url_for('remove_from_cart', product_id = product.product_id) }}", method='POST'>
+                              <input class="btn btn-danger" type=submit value="Remove Product"/>
+                            </form>
+                          </div>
+                          <p class="mb-0"><span><strong id="summary">₺{{ product.price }}</strong></span></p class="mb-0">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="mb-4">
+              {% endfor %}
+            {% else %}
+              <div>
+                <h3>There is no any product in the cart!</h3>
+                Now go to the home page to add any product!
+              </div>
+            {% endif %}
+          <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
+            items to your cart does not mean booking them.</p>
+
+        </div>
+      </div>
+    </div>
+    <!--Grid column-->
+    <div class="col-lg-4">
+
+      <!-- Card -->
+      <div class="mb-3">
+        <div class="pt-4">
+
+          <h5 class="mb-3">Payment</h5>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+              Total Product Price
+              <span>₺{{ total_price }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Cargo
+              <span>Free</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+              <div>
+                <strong>The total amount of</strong>
+              </div>
+              <span><strong>₺{{ total_price }}</strong></span>
+            </li>
+          </ul>
+
+          <button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Confirm Order</button>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- Grid row -->
+
+</section>
+<!--Section: Block Content-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Confirm Order?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure that you wanna confirm the order?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <form action="{{ url_for('confirm_order') }}", method='POST'>
+                      <input class="btn btn-danger" type=submit value="Confirm"/>
+                  </form>
+                </div>
+            </div>
+          </div>
+        </div>
+{% endblock content %}
